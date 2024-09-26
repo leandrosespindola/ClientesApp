@@ -46,12 +46,9 @@
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Clientes API v1");
-                //c.RoutePrefix = string.Empty; // Para acessar o Swagger na raiz da URL
             });
 
             return app;
         }
     }
 }
-
-

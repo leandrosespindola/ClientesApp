@@ -32,6 +32,3 @@ namespace ClientesApp.API.Controllers
         }
     }
 }
-
-
-
