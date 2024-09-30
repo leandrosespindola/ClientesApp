@@ -1,12 +1,11 @@
-﻿using ClientesApp.Infra.Data.SqlServer.Contexts;
+﻿using ClientesApp.Domain.Interfaces.Repositories;
+using ClientesApp.Domain.Interfaces.Services;
+using ClientesApp.Domain.Services;
+using ClientesApp.Infra.Data.SqlServer.Contexts;
+using ClientesApp.Infra.Data.SqlServer.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientesApp.Infra.Data.SqlServer.Extensions
 {
@@ -20,6 +19,10 @@ namespace ClientesApp.Infra.Data.SqlServer.Extensions
         {
             var connectionString = configuration.GetConnectionString("ClientesApp");
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+
+            //injeções de dependência
+            services.AddTransient<IClienteRepository, ClienteRepository>();
+            services.AddTransient<IClienteDomainService, ClienteDomainService>();
 
             return services;
         }
