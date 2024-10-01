@@ -1,4 +1,5 @@
 ﻿using ClientesApp.Domain.Entities;
+using ClientesApp.Domain.Exceptions;
 using ClientesApp.Domain.Interfaces.Repositories;
 using ClientesApp.Domain.Interfaces.Services;
 using FluentValidation;
@@ -28,6 +29,10 @@ namespace ClientesApp.Domain.Services
 
         public async Task<Cliente> UpdateAsync(Cliente cliente)
         {
+            var clienteUpdate = await _clienteRepository.GetByIdAsync(cliente.Id);
+            if (clienteUpdate == null)
+                throw new ClienteNotFoundException(cliente.Id);
+
             var validationResult = await _validator.ValidateAsync(cliente);
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
@@ -38,19 +43,22 @@ namespace ClientesApp.Domain.Services
 
         public async Task<Cliente> DeleteAsync(Guid id)
         {
+            var cliente = await _clienteRepository.GetByIdAsync(id);
+            if (cliente == null)
+                throw new ClienteNotFoundException(id);
+
             await _clienteRepository.DeleteAsync(new Cliente { Id = id});
-            return await _clienteRepository.GetByIdAsync(id);
+            return cliente;
+        }
+
+        public async Task<List<Cliente>> GetManyAsync(string nome)
+        {
+            return await _clienteRepository.GetManyAsync(c => c.Nome.Contains(nome));
         }
 
         public async Task<Cliente?> GetByIdAsync(Guid id)
         {
             return await _clienteRepository.GetByIdAsync(id);
-        }
-
-        public async Task<List<Cliente>> GetManyAsync(string nome)
-        {
-            throw new NotImplementedException();
-            //return await _clienteRepository.GetManyAsync(nome);
         }
 
         public void Dispose()

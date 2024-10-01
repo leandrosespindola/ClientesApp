@@ -53,9 +53,15 @@ namespace ClientesApp.Infra.Data.SqlServer.Repositories
             return await _dataContext.Set<TEntity>().FindAsync(id);
         }
 
+
         public virtual void Dispose()
         {
             _dataContext.Dispose();
+        }
+
+        public virtual async Task<bool> VerifyExistsAsync(Expression<Func<TEntity, bool>> where)
+        {
+            return await _dataContext.Set<TEntity>().AnyAsync(where);
         }
     }
 }
