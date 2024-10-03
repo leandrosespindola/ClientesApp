@@ -2,6 +2,7 @@
 using ClientesApp.Domain.Exceptions;
 using ClientesApp.Domain.Interfaces.Repositories;
 using ClientesApp.Domain.Interfaces.Services;
+using ClientesApp.Domain.Validations;
 using FluentValidation;
 
 namespace ClientesApp.Domain.Services
@@ -29,9 +30,11 @@ namespace ClientesApp.Domain.Services
 
         public async Task<Cliente> UpdateAsync(Cliente cliente)
         {
-            var clienteUpdate = await _clienteRepository.GetByIdAsync(cliente.Id);
-            if (clienteUpdate == null)
+            if (!await _clienteRepository.VerifyExistsAsync(c => c.Id == cliente.Id))
                 throw new ClienteNotFoundException(cliente.Id);
+
+            if(_validator is ClienteValidator validator)
+                validator.SetCurrentClienteId(cliente.Id);  
 
             var validationResult = await _validator.ValidateAsync(cliente);
             if (!validationResult.IsValid)

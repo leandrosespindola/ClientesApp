@@ -4,11 +4,10 @@ using ClientesApp.Domain.Services;
 using ClientesApp.Domain.Validations;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System.ComponentModel.DataAnnotations;
 
 namespace ClientesApp.Domain.Extensions
 {
-    public static class ClienteDomainServiceExtention 
+    public static class DomainServiceExtension 
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection services)
         {
