@@ -1,4 +1,4 @@
-﻿using ClientesApp.Application.Interfaces;
+﻿using ClientesApp.Application.Interfaces.Applications;
 using ClientesApp.Application.Mappings;
 using ClientesApp.Application.Services;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,5 +1,5 @@
-﻿using ClientesApp.Application.DTO;
-using ClientesApp.Application.Interfaces;
+﻿using ClientesApp.Application.Dtos;
+using ClientesApp.Application.Interfaces.Applications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientesApp.API.Controllers

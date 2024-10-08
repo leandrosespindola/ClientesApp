@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
-using ClientesApp.Application.DTO;
-using ClientesApp.Application.Interfaces;
+using ClientesApp.Application.Commands;
+using ClientesApp.Application.Dtos;
+using ClientesApp.Application.Interfaces.Applications;
+using ClientesApp.Application.Models;
 using ClientesApp.Domain.Entities;
 using ClientesApp.Domain.Interfaces.Services;
+using MediatR;
+using Newtonsoft.Json;
 
 namespace ClientesApp.Application.Services
 {
@@ -10,11 +14,13 @@ namespace ClientesApp.Application.Services
     {
         private readonly IClienteDomainService _clienteDomainService;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public ClienteAppService(IClienteDomainService clienteDomainService, IMapper mapper)
+        public ClienteAppService(IClienteDomainService clienteDomainService, IMapper mapper, IMediator mediator)
         {
             _clienteDomainService = clienteDomainService;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<ClienteResponseDto> AddAsync(ClienteRequestDto request)
@@ -23,6 +29,23 @@ namespace ClientesApp.Application.Services
             cliente.Id = Guid.NewGuid();
 
             var result = await _clienteDomainService.AddAsync(cliente);
+
+            #region
+
+            await _mediator.Send(new ClienteCommand
+            {
+                LogCliente = new LogClienteModel
+                {
+                    Id = Guid.NewGuid(),
+                    DataOperacao = DateTime.Now,
+                    TipoOperacao = TipoOperacao.Add,
+                    ClienteId = cliente.Id,
+                    DadosClientes = JsonConvert.SerializeObject(cliente)
+                }
+            });
+
+            #endregion
+
             return _mapper.Map<ClienteResponseDto>(result);
         }
 
@@ -32,12 +55,42 @@ namespace ClientesApp.Application.Services
             cliente.Id = id;
 
             var result = await _clienteDomainService.UpdateAsync(cliente);
+
+            #region
+            await _mediator.Send(new ClienteCommand
+            {
+                LogCliente = new LogClienteModel
+                {
+                    Id = Guid.NewGuid(),
+                    DataOperacao = DateTime.Now,
+                    TipoOperacao = TipoOperacao.Update,
+                    ClienteId = cliente.Id,
+                    DadosClientes = JsonConvert.SerializeObject(cliente)
+                }
+            });
+            #endregion
+
             return _mapper.Map<ClienteResponseDto>(result);
         }
 
         public async Task<ClienteResponseDto> DeleteAsync(Guid id)
         {
             var result = await _clienteDomainService.DeleteAsync(id);
+
+            #region
+            await _mediator.Send(new ClienteCommand
+            {
+                LogCliente = new LogClienteModel
+                {
+                    Id = Guid.NewGuid(),
+                    DataOperacao = DateTime.Now,
+                    TipoOperacao = TipoOperacao.Delete,
+                    ClienteId = result.Id,
+                    DadosClientes = JsonConvert.SerializeObject(result)
+                }
+            });
+            #endregion
+
             return _mapper.Map<ClienteResponseDto>(result);
         }
 

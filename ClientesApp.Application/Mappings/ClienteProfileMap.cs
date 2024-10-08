@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ClientesApp.Application.DTO;
+using ClientesApp.Application.Dtos;
 using ClientesApp.Domain.Entities;
 
 namespace ClientesApp.Application.Mappings

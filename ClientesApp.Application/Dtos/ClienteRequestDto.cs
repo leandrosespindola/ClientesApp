@@ -1,10 +1,10 @@
-﻿namespace ClientesApp.Application.DTO
+﻿namespace ClientesApp.Application.Dtos
 {
-    public class ClienteResponseDto
+    public class ClienteRequestDto
     {
-        public Guid Id { get; set; }
         public string? Nome { get; set; }
         public string? Email { get; set; }
         public string? Cpf { get; set; }
+
     }
 }

@@ -1,6 +1,6 @@
-﻿using ClientesApp.Application.DTO;
+﻿using ClientesApp.Application.Dtos;
 
-namespace ClientesApp.Application.Interfaces
+namespace ClientesApp.Application.Interfaces.Applications
 {
     public interface IClienteAppService : IDisposable
     {
