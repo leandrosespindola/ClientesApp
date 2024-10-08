@@ -56,7 +56,10 @@ namespace ClientesApp.Infra.Data.SqlServer.Repositories
 
         public virtual void Dispose()
         {
-            _dataContext.Dispose();
+            if (_dataContext != null)
+            {
+                _dataContext.Dispose();
+            }
         }
 
         public virtual async Task<bool> VerifyExistsAsync(Expression<Func<TEntity, bool>> where)

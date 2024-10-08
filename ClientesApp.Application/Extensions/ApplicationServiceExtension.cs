@@ -10,8 +10,8 @@ namespace ClientesApp.Application.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(ClienteProfileMap));
-
-            services.AddTransient<IClienteAppService, ClienteAppService>();
+            services.AddMediatR(m => m.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+            services.AddTransient<IClienteAppService, ClienteAppService>();            
 
             return services;
         }

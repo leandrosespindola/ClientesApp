@@ -50,7 +50,7 @@ namespace ClientesApp.Domain.Services
             if (cliente == null)
                 throw new ClienteNotFoundException(id);
 
-            await _clienteRepository.DeleteAsync(new Cliente { Id = id});
+            await _clienteRepository.DeleteAsync(cliente);
             return cliente;
         }
 
