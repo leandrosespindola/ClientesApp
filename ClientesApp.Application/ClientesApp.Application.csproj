@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ClientesApp.Domain\ClientesApp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\Messages\" />
+  </ItemGroup>
+
 </Project>
