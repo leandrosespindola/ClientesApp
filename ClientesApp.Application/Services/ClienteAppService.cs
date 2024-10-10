@@ -2,6 +2,7 @@
 using ClientesApp.Application.Commands;
 using ClientesApp.Application.Dtos;
 using ClientesApp.Application.Interfaces.Applications;
+using ClientesApp.Application.Interfaces.Logs;
 using ClientesApp.Application.Interfaces.Messages;
 using ClientesApp.Application.Models;
 using ClientesApp.Domain.Entities;
@@ -17,13 +18,15 @@ namespace ClientesApp.Application.Services
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly IMessagePublisher _messagePublisher;
+        private readonly ILogClienteDataStore _logClienteDataStore;
 
-        public ClienteAppService(IClienteDomainService clienteDomainService, IMapper mapper, IMediator mediator, IMessagePublisher messagePublisher)
+        public ClienteAppService(IClienteDomainService clienteDomainService, IMapper mapper, IMediator mediator, IMessagePublisher messagePublisher, ILogClienteDataStore logClienteDataStore)
         {
             _clienteDomainService = clienteDomainService;
             _mapper = mapper;
             _mediator = mediator;
             _messagePublisher = messagePublisher;
+            _logClienteDataStore = logClienteDataStore;
         }
 
         public async Task<ClienteResponseDto> AddAsync(ClienteRequestDto request)
@@ -116,6 +119,20 @@ namespace ClientesApp.Application.Services
         {
             var result = await _clienteDomainService.GetByIdAsync(id);
             return _mapper.Map<ClienteResponseDto>(result);
+        }
+
+        public async Task<LogClienteResponseDto> GetLogs(Guid id, LogClienteRequestDto request)
+        {
+            var logs = await _logClienteDataStore.GetAsync(id, request.PageNumber, request.PageSize);
+            var totalCount = await _logClienteDataStore.GetTotalCountAsync(id);
+
+            return new LogClienteResponseDto
+            {
+                TotalCount = totalCount,
+                PageSize = request.PageSize,
+                CurrentPage = request.PageNumber,
+                Logs = logs
+            };
         }
 
         public void Dispose()

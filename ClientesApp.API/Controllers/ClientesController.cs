@@ -50,5 +50,13 @@ namespace ClientesApp.API.Controllers
         {
             return StatusCode(200, await _clienteAppService.GetByIdAsync(id));
         }
+
+        [HttpGet("logs/{id}")] // /api/clientes/logs/1?pageIndex=1&pagesize=10
+        [ProducesResponseType(typeof(LogClienteResponseDto), 200)]
+        public async Task<IActionResult> GetLogs(Guid id, [FromQuery] LogClienteRequestDto request)
+        {
+            return StatusCode(200, await _clienteAppService.GetLogs(id, request));
+        }
+
     }
 }
