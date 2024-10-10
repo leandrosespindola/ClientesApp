@@ -4,6 +4,7 @@ using ClientesApp.Domain.Extensions;
 using ClientesApp.Application.Extensions;
 using ClientesApp.API.Middlewares;
 using ClientesApp.Infra.Data.MongoDB.Extensions;
+using ClientesApp.Infra.Messages.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddEntityFramework(builder.Configuration);
 builder.Services.AddDomainServices();
 builder.Services.AddApplicationServices();
 builder.Services.AddMongoDB(builder.Configuration);
+builder.Services.AddRabbitMQ(builder.Configuration);
 
 var app = builder.Build();
 

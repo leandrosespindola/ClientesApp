@@ -1,4 +1,6 @@
-﻿using ClientesApp.Infra.Messages.Settings;
+﻿using ClientesApp.Application.Interfaces.Messages;
+using ClientesApp.Infra.Messages.Publishers;
+using ClientesApp.Infra.Messages.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -15,6 +17,7 @@ namespace ClientesApp.Infra.Messages.Extensions
                 .Configure(rabbitMQSettings);
 
             services.AddSingleton(rabbitMQSettings);
+            services.AddTransient<IMessagePublisher, MessagePublisher>();
 
             return services;
         }
