@@ -16,11 +16,14 @@ builder.Services.AddDomainServices();
 builder.Services.AddApplicationServices();
 builder.Services.AddMongoDB(builder.Configuration);
 builder.Services.AddRabbitMQ(builder.Configuration);
+builder.Services.AddCorsConfig(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseMiddleware<ValidationExceptionMiddleware>();
 app.UseMiddleware<NotFoundExceptionMiddleware>();
+
+app.UseCorsConfig();
 app.UseSwaggerConfig();
 app.UseAuthorization();
 app.MapControllers();
