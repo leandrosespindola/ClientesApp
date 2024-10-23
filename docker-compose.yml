@@ -36,6 +36,20 @@ services:
     networks:
       - mynetwork
 
+  clientesapp:
+    build:
+      context: .
+      dockerfile: ./ClientesApp.API/Dockerfile
+    container_name: clientesapp
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+      - mongodb
+      - rabbitmq
+    networks:
+      - mynetwork
+
 volumes:
   sqlserver_data:
   mongodb_data:
