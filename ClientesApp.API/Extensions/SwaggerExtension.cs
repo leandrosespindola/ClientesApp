@@ -1,4 +1,8 @@
-﻿namespace ClientesApp.API.Extensions
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+namespace ClientesApp.API.Extensions
 {
     /// <summary>
     /// Classe de extensão para configuração do Swagger
@@ -31,6 +35,30 @@
                         Url = new Uri("https://opensource.org/licenses/MIT")
                     }
                 });
+
+                // Configuração do JWT Bearer no Swagger
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "Por favor, insira o token JWT Bearer",
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                });
+
+                c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
 
             return services;
@@ -52,3 +80,6 @@
         }
     }
 }
+
+
+

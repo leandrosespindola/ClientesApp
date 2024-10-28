@@ -1,9 +1,11 @@
 ﻿using ClientesApp.Application.Dtos;
 using ClientesApp.Application.Interfaces.Applications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientesApp.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ClientesController : ControllerBase
@@ -15,6 +17,7 @@ namespace ClientesApp.API.Controllers
             _clienteAppService = clienteAppService;
         }
 
+        //[AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(ClienteResponseDto), 201)]
         public async Task<IActionResult> Post([FromBody] ClienteRequestDto request)
