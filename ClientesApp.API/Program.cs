@@ -17,7 +17,7 @@ builder.Services.AddApplicationServices();
 builder.Services.AddMongoDB(builder.Configuration);
 builder.Services.AddRabbitMQ(builder.Configuration);
 builder.Services.AddCorsConfig(builder.Configuration);
-//builder.Services.AddJwtConfig(builder.Configuration);
+builder.Services.AddJwtConfig(builder.Configuration);
 
 var app = builder.Build();
 
@@ -26,7 +26,7 @@ app.UseMiddleware<NotFoundExceptionMiddleware>();
 
 app.UseCorsConfig();
 app.UseSwaggerConfig();
-//app.UseJwtConfig();
+app.UseJwtConfig();
 app.MapControllers();
 
 app.Run();
