@@ -24,6 +24,7 @@ namespace ClientesApp.Infra.Messages.Publishers
                 Port = _rabbitMQSettings.Port,
                 UserName = _rabbitMQSettings.Username,
                 Password = _rabbitMQSettings.Password,
+                VirtualHost = _rabbitMQSettings.Username
             };
 
             using (var connection = await Task.Run(() => factory.CreateConnection()))
